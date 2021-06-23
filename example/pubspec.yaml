@@ -28,7 +28,12 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
+  time_of_day_widget:
 
+dependency_overrides:
+  time_of_day_widget:
+    path: ../
+    
 dev_dependencies:
   flutter_test:
     sdk: flutter
