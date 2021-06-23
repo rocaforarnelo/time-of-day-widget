@@ -1,4 +1,6 @@
+import 'package:example/image_asset_names.dart';
 import 'package:flutter/material.dart';
+import 'package:time_of_day_widget/models/time_of_day_range.dart';
 import 'package:time_of_day_widget/time_of_day_widget.dart';
 
 void main() {
@@ -34,65 +36,123 @@ class _MyHomePageState extends State<MyHomePage> {
         appBar: AppBar(
           title: Text(widget.title),
         ),
-        body: TimeOfDayWidget(
-          timeOfDayWidgetBuilders: [
-            (context, timeOfDay, child) {
-              return _TimeOfDaySampleWidget(
-                imageAssetUrl:
-                    'https://c.tadst.com/gfx/750w/nautical-twilight-lake.jpg?1',
-                timeOfDay: timeOfDay,
-              );
-            },
-            (context, timeOfDay, child) {
-              return _TimeOfDaySampleWidget(
-                imageAssetUrl:
-                    'https://media.istockphoto.com/photos/sunrise-picture-id531253600?k=6&m=531253600&s=612x612&w=0&h=5TlTeuDKczLxsZno-y28J1r9OTHH0KqoEn4XG0LyZDw=',
-                timeOfDay: timeOfDay,
-              );
-            },
-            (context, timeOfDay, child) {
-              return _TimeOfDaySampleWidget(
-                imageAssetUrl:
-                    'https://media.istockphoto.com/photos/miraculous-heavenly-light-panorama-banner-picture-id932252868?k=6&m=932252868&s=612x612&w=0&h=0NfalAxcXZ7HQVYJgkMgejyvqPnk1kJcYKVvtA9o3AA=',
-                timeOfDay: timeOfDay,
-              );
-            },
-            (context, timeOfDay, child) {
-              return _TimeOfDaySampleWidget(
-                imageAssetUrl:
-                    'https://i.pinimg.com/originals/81/a7/b7/81a7b7a3f0b50f5b36a2a345b73614d1.jpg',
-                timeOfDay: timeOfDay,
-              );
-            },
-            (context, timeOfDay, child) {
-              return _TimeOfDaySampleWidget(
-                imageAssetUrl:
-                    'https://www.maxpixel.net/static/photo/1x/Light-Sunset-Sky-Nightfall-In-The-Evening-777111.jpg',
-                timeOfDay: timeOfDay,
-              );
-            }
+        body: Column(
+          children: [
+            Text('Time Of Day Widget'),
+            _buildTimeOfDayWidget(),
+            Text('Time Of Day Range Widget'),
+            _buildTimeOfDayRangesWidget()
           ],
         ));
+  }
+
+  Widget _buildTimeOfDayRangesWidget() {
+    return TimeOfDayRangedWidget(
+      timeOfDayRanges: [
+        TimeOfDayRange(
+            from: TimeOfDay(hour: 1, minute: 0),
+            to: TimeOfDay(hour: 5, minute: 0),
+            builder: (context, timeOfDay, child) {
+              return _TimeOfDaySampleWidget(
+                imageAssetPath: ImageAssetNames.twilight,
+                timeOfDay: timeOfDay,
+              );
+            }),
+        TimeOfDayRange(
+            from: TimeOfDay(hour: 5, minute: 0),
+            to: TimeOfDay(hour: 9, minute: 0),
+            builder: (context, timeOfDay, child) {
+              return _TimeOfDaySampleWidget(
+                imageAssetPath: ImageAssetNames.sunrise,
+                timeOfDay: timeOfDay,
+              );
+            }),
+        TimeOfDayRange(
+            from: TimeOfDay(hour: 9, minute: 0),
+            to: TimeOfDay(hour: 15, minute: 0),
+            builder: (context, timeOfDay, child) {
+              return _TimeOfDaySampleWidget(
+                imageAssetPath: ImageAssetNames.midday,
+                timeOfDay: timeOfDay,
+              );
+            }),
+        TimeOfDayRange(
+            from: TimeOfDay(hour: 15, minute: 0),
+            to: TimeOfDay(hour: 19, minute: 0),
+            builder: (context, timeOfDay, child) {
+              return _TimeOfDaySampleWidget(
+                imageAssetPath: ImageAssetNames.sunglow,
+                timeOfDay: timeOfDay,
+              );
+            }),
+        TimeOfDayRange(
+            from: TimeOfDay(hour: 19, minute: 0),
+            to: TimeOfDay(hour: 24, minute: 0),
+            builder: (context, timeOfDay, child) {
+              return _TimeOfDaySampleWidget(
+                imageAssetPath: ImageAssetNames.nightfall,
+                timeOfDay: timeOfDay,
+              );
+            })
+      ],
+    );
+  }
+
+  TimeOfDayWidget _buildTimeOfDayWidget() {
+    return TimeOfDayWidget(
+      timeOfDayWidgetBuilders: [
+        (context, timeOfDay, child) {
+          return _TimeOfDaySampleWidget(
+            imageAssetPath: ImageAssetNames.twilight,
+            timeOfDay: timeOfDay,
+          );
+        },
+        (context, timeOfDay, child) {
+          return _TimeOfDaySampleWidget(
+            imageAssetPath: ImageAssetNames.sunrise,
+            timeOfDay: timeOfDay,
+          );
+        },
+        (context, timeOfDay, child) {
+          return _TimeOfDaySampleWidget(
+            imageAssetPath: ImageAssetNames.midday,
+            timeOfDay: timeOfDay,
+          );
+        },
+        (context, timeOfDay, child) {
+          return _TimeOfDaySampleWidget(
+            imageAssetPath: ImageAssetNames.sunglow,
+            timeOfDay: timeOfDay,
+          );
+        },
+        (context, timeOfDay, child) {
+          return _TimeOfDaySampleWidget(
+            imageAssetPath: ImageAssetNames.nightfall,
+            timeOfDay: timeOfDay,
+          );
+        }
+      ],
+    );
   }
 }
 
 class _TimeOfDaySampleWidget extends StatelessWidget {
   final TimeOfDay timeOfDay;
-  final String imageAssetUrl;
+  final String imageAssetPath;
 
   const _TimeOfDaySampleWidget(
-      {Key? key, required this.timeOfDay, required this.imageAssetUrl})
+      {Key? key, required this.timeOfDay, required this.imageAssetPath})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Center(
       child: Container(
-        height: 300,
+        height: 200,
         width: 300,
         decoration: BoxDecoration(
             image: DecorationImage(
-                image: NetworkImage(imageAssetUrl), fit: BoxFit.cover)),
+                image: AssetImage(imageAssetPath), fit: BoxFit.cover)),
         child: Text(timeOfDay.format(context),
             style:
                 Theme.of(context).textTheme.headline1!.copyWith(fontSize: 12)),
